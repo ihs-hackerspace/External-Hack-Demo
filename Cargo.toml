@@ -8,6 +8,3 @@ edition = "2021"
 [dependencies]
 toy-arms = {version = "0.9.4", features = ["external"]}
 winapi = "0.3.9"
-
-[build]
-target = "i686-pc-windows-msvc"
