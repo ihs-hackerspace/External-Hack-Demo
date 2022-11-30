@@ -8,18 +8,16 @@ use std::time::Duration;
 fn follow_offset_chain(
     process: *mut c_void, 
     module_base: usize, 
-    offsets: &Vec<u32>
-) -> Result<u32, TAExternalError> {
+    offsets: &Vec<usize>
+) -> Result<usize, TAExternalError> {
     // Create a mutable starting address
-    let mut address = module_base as u32;
+    let mut address = module_base;
 
     // Loop through the offsets, find the address they point to, and 
     // update the starting address for the next iteration
     for offset in offsets.iter().take(offsets.len() - 1) {
-        address = read::<u32>(
-            process, 
-            address as usize + *offset as usize
-        )?;
+        // The pointer is stored as a 4-byte value so we need to read as a u32 and cast to a usize
+        address = read::<u32>(process, address + *offset)? as usize;
     }
 
     // Return the final address if no errors occurred
@@ -28,8 +26,8 @@ fn follow_offset_chain(
 
 fn entry_point() -> Result<(), TAExternalError> {
     // Create offset chains based on the game's memory found with Cheat Engine
-    let health_offset_chain: Vec<u32> = vec![0x5D5444, 0xD8];
-    let pistol_ammo_offset_chain: Vec<u32> = vec![0x5D6104, 0x4A8];
+    let health_offset_chain: Vec<usize> = vec![0x5D5444, 0xD8];
+    let pistol_ammo_offset_chain: Vec<usize> = vec![0x5D6104, 0x4A8];
     
     // Get the process handle for the game
     let left_4_dead = Process::from_process_name("left4dead.exe")?;
@@ -47,15 +45,15 @@ fn entry_point() -> Result<(), TAExternalError> {
     
     loop {
         // Read the health value
-        let health = read::<u32>(left_4_dead.process_handle, health_address as usize)?;
+        let health = read::<u32>(left_4_dead.process_handle, health_address)?;
         println!("health: {}", health);
     
         // Read the pistol ammo value
-        let ammo = read::<u32>(left_4_dead.process_handle, ammo_address as usize)?;
+        let ammo = read::<u32>(left_4_dead.process_handle, ammo_address)?;
         println!("ammo: {}", ammo);
     
         // Write to the health value to set it to 100
-        write::<u32>(left_4_dead.process_handle, health_address as usize, &mut 100)?;
+        write::<u32>(left_4_dead.process_handle, health_address, &mut 100)?;
     
         sleep(Duration::from_millis(1000));
     }
