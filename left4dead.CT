@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="42">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>13</ID>
+      <Description>"Player Health"</Description>
+      <LastState Value="100" RealAddress="24B51A68"/>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>4 Bytes</VariableType>
+      <Address>"server.dll"+005D5444</Address>
+      <Offsets>
+        <Offset>D8</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>29</ID>
+      <Description>"Pistol Ammo"</Description>
+      <LastState Value="15" RealAddress="39D635C8"/>
+      <VariableType>4 Bytes</VariableType>
+      <Address>"server.dll"+005D6104</Address>
+      <Offsets>
+        <Offset>4A8</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>23</ID>
+      <Description>"Uzi Ammo"</Description>
+      <LastState Value="4229561532" RealAddress="45655148"/>
+      <VariableType>4 Bytes</VariableType>
+      <Address>45655148</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>28</ID>
+      <Description>"Shotgun Ammo"</Description>
+      <LastState Value="4" RealAddress="4691A238"/>
+      <VariableType>4 Bytes</VariableType>
+      <Address>4691A238</Address>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+  <Comments>Info about this table:
+</Comments>
+</CheatTable>
