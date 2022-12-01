@@ -50,7 +50,7 @@ This method is better, but is still isn’t perfect. Like with static addresses,
    git clone https://github.com/ihs-hackerspace/External-Hack-Demo.git
    cd External-Hack-Demo/
    ```
-2. Install NPM packages
+2. Run script
    ```sh
    cargo run
    ```
