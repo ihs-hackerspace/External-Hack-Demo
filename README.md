@@ -14,6 +14,8 @@ In order to do this, we need to use cheat engine to [search for the location of 
 
 Although this method is relatively easy, it is also imperfect. For one, we will have to update all of these offsets ever time that the game receives and update, which is painful once you have more than just a few offsets in your cheat. More importantly, though, you can actually still die. With this method, all we are doing is “topping up” the player’s health, which means that if the player takes over 100 damage before we top their health up, then they just die. We could top up their health more often to mitigate this, but in some games where a single hit from a boss could kill you, freezing the value will not work.
 
+<p align="right">(<a href="#top">back to top</a>)</p>
+
 
 ### “Pattern Scan” Method
 
@@ -31,6 +33,8 @@ As a tangent, “??” means that anything can match our pattern scan. For examp
 #### ["Pattern Scan" Demo GIF](https://firebasestorage.googleapis.com/v0/b/ihs-hackerspace-website.appspot.com/o/pattern_search_demo.gif?alt=media&token=b00209a9-c74c-4f5b-86da-ae012ccffc08)
 
 This method is better, but is still isn’t perfect. Like with static addresses, there is a chance that the instruction bytes we are scanning for could change with an update (though far less likely than with the previous method). Another downside is that is takes a lot of time to scan for instruction bytes in memory. It doesn’t take years or anything, but it does still mean that our program takes longer to start up. Luckily, as long as we store the addresses of the heath and ammo instructions, we only have to scan for them once, so there isn’t much of an overhead once the program gets going.
+
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- RUNNING EXAMPLES LOCALLY -->
 ## Running Examples Locally
