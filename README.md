@@ -2,7 +2,6 @@
 
 <!-- OVERVIEW -->
 # External Hack Demo
-## Explanation
 
 This repo contains a demo of a godmode and infinite ammo hack for Left 4 Dead written in Rust. The demo has two different example implementations: what I call the “freeze value” method and the “pattern scan” method. The “freeze value” method involves finding the location of the values for health and ammo in memory, then repeatedly writing our own values in that location.  The “pattern scan” method involves looking for the instruction in the game’s code that decreases the player’s health and the player’s ammo, and disabling them.
 
