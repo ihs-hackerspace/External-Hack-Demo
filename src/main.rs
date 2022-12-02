@@ -12,7 +12,7 @@ fn main() {
     let mode = Mode::PatternScan;
 
     match mode {
-        Mode::FreezeValue => freeze_value_example::entry_point().unwrap(),
-        Mode::PatternScan => pattern_scan_example::entry_point().unwrap(),
+        Mode::FreezeValue => freeze_value_example::run().unwrap(),
+        Mode::PatternScan => pattern_scan_example::run().unwrap(),
     }
 }

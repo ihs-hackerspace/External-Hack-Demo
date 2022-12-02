@@ -25,7 +25,7 @@ fn follow_offset_chain(
     return Ok(address + offsets[offsets.len() - 1]);
 }
 
-pub fn entry_point() -> Result<(), TAExternalError> {
+pub fn run() -> Result<(), TAExternalError> {
     // Create offset chains based on the game's memory found with Cheat Engine
     let health_offset_chain: Vec<usize> = vec![0x5D5444, 0xD8];
     let pistol_ammo_offset_chain: Vec<usize> = vec![0x5D6104, 0x4A8];

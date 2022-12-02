@@ -47,7 +47,7 @@ impl Instruction {
     fn from_pattern(instruction_bytes: Bytes, module: &Module, mask: &str) -> Result<Self, Error> {
         let address = module.find_pattern(&mask).ok_or(Error::PatternScanError)?;
         Ok(Self {
-            instruction_bytes: instruction_bytes,
+            instruction_bytes,
             address,
             disabled: false
         })
@@ -90,7 +90,7 @@ impl Instruction {
     }
 }
 
-pub fn entry_point() -> Result<(), Error> {
+pub fn run() -> Result<(), Error> {
     // Get the process handle for the game
     println!("Getting left4dead process handle...");
     let left_4_dead = Process::from_process_name("left4dead.exe")?;
@@ -110,9 +110,8 @@ pub fn entry_point() -> Result<(), Error> {
 
     // Creating the ammo instruction
     println!("Getting ammo instruction...");
-    let ammo_instruction_bytes: Bytes = vec![0x89, 0x2F]; // Found using Cheat Engine "Find what writes to this address" feature
     let mut ammo_instruction = Instruction::from_pattern(
-        ammo_instruction_bytes,
+        vec![0x89, 0x2F], // Found using Cheat Engine "Find what writes to this address" feature
         &server_dll,
         "?? ?? 8B 07 DB 44 24 18", 
     )?;
