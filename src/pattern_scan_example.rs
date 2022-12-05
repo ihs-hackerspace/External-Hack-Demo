@@ -45,7 +45,7 @@ impl Instruction {
 
     // Create a new Instruction from a pattern scan
     fn from_pattern(instruction_bytes: Bytes, module: &Module, mask: &str) -> Result<Self, Error> {
-        let address = module.find_pattern(&mask).ok_or(Error::PatternScanError)?;
+        let address = module.find_pattern(mask).ok_or(Error::PatternScanError)?;
         Ok(Self {
             instruction_bytes,
             address,
@@ -99,16 +99,19 @@ pub fn run() -> Result<(), Error> {
     println!("Getting server.dll module...");
     let server_dll = left_4_dead.get_module_info("server.dll")?;
 
-    // Creating the health instruction
+    // Creating the health instruction using Instruction::new()
     println!("Getting health instruction...");
     let health_instruction_bytes: Bytes = vec![0x89, 0x37]; // Found using Cheat Engine "Find what writes to this address" feature
-    let health_address = server_dll.find_pattern("?? ?? 5F B8 01 00 00 00 5E 83").ok_or(Error::PatternScanError)?;
+    let health_address = server_dll
+        .find_pattern("?? ?? 5F B8 01 00 00 00 5E 83")
+        .ok_or(Error::PatternScanError)?;
+
     let mut health_instruction = Instruction::new(
         health_instruction_bytes,
         health_address, 
     );
 
-    // Creating the ammo instruction
+    // Creating the ammo instruction using Instruction::from_pattern()
     println!("Getting ammo instruction...");
     let mut ammo_instruction = Instruction::from_pattern(
         vec![0x89, 0x2F], // Found using Cheat Engine "Find what writes to this address" feature

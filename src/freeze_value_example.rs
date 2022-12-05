@@ -22,7 +22,7 @@ fn follow_offset_chain(
     }
 
     // Return the final address if no errors occurred
-    return Ok(address + offsets[offsets.len() - 1]);
+    Ok(address + offsets[offsets.len() - 1])
 }
 
 pub fn run() -> Result<(), TAExternalError> {
