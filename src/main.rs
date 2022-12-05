@@ -9,7 +9,7 @@ enum Mode {
 
 fn main() {
     // Change this to change the example that is run
-    let mode = Mode::PatternScan;
+    let mode = Mode::FreezeValue;
 
     match mode {
         Mode::FreezeValue => freeze_value_example::run().unwrap(),

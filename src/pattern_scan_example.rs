@@ -44,8 +44,8 @@ impl Instruction {
     }
 
     // Create a new Instruction from a pattern scan
-    fn from_pattern(instruction_bytes: Bytes, module: &Module, mask: &str) -> Result<Self, Error> {
-        let address = module.find_pattern(mask).ok_or(Error::PatternScanError)?;
+    fn from_pattern(instruction_bytes: Bytes, module: &Module, pattern: &str) -> Result<Self, Error> {
+        let address = module.find_pattern(pattern).ok_or(Error::PatternScanError)?;
         Ok(Self {
             instruction_bytes,
             address,
@@ -60,8 +60,12 @@ impl Instruction {
     // we can replace the original instruction with a nop, and then when we want
     // to toggle the instruction back on, we can replace the nop with the original
     fn nop(&mut self, process: &Process) -> Result<(), Error> {
-        for i in 0..self.instruction_bytes.len() {
-            write::<byte>(process.process_handle, self.address + i as usize, &mut 0x90)?;
+        for (i, _) in self.instruction_bytes.iter().enumerate() {
+            write::<byte>(
+                process.process_handle, 
+                self.address + i as usize, 
+                &mut 0x90
+            )?;
         }
         self.disabled = true;
 
@@ -71,7 +75,11 @@ impl Instruction {
     // Restore the orginal instruction
     fn restore(&mut self, process: &Process) -> Result<(), Error> {
         for (i, byte) in self.instruction_bytes.iter_mut().enumerate() {
-            write::<byte>(process.process_handle, self.address + i, &mut *byte)?;
+            write::<byte>(
+                process.process_handle, 
+                self.address + i, 
+                &mut *byte
+            )?;
         }
         self.disabled = false;
 
