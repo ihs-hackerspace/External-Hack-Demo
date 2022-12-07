@@ -1,5 +1,6 @@
-mod freeze_value_example;
-mod pattern_scan_example;
+mod prelude;
+mod examples;
+use examples::{pattern_scan, freeze_value};
 
 #[allow(dead_code)]
 enum Mode {
@@ -12,7 +13,7 @@ fn main() {
     let mode = Mode::PatternScan;
 
     match mode {
-        Mode::FreezeValue => freeze_value_example::run().unwrap(),
-        Mode::PatternScan => pattern_scan_example::run().unwrap(),
+        Mode::FreezeValue => freeze_value::run().unwrap(),
+        Mode::PatternScan => pattern_scan::run().unwrap(),
     }
 }

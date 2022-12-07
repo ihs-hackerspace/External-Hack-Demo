@@ -2,8 +2,8 @@ use std::time::Duration;
 use std::thread::sleep;
 use toy_arms::external::Process;
 use toy_arms::external::Module;
-use toy_arms::external::error::TAExternalError;
 use toy_arms::external::write;
+use crate::prelude::*;
 
 // Alias for an unsigned 8-bit integer
 #[allow(non_camel_case_types)]
@@ -11,18 +11,6 @@ type byte = u8;
 
 // Alias for a vector of bytes
 type Bytes = Vec<byte>;
-
-#[derive(Debug)]
-pub enum Error {
-    TAExternalError(TAExternalError),
-    PatternScanError,
-}
-  
-impl From<TAExternalError> for Error {
-    fn from(error: TAExternalError) -> Self {
-        Error::TAExternalError(error)
-    }
-}
 
 // Define a structure that will hold our hex instructions, 
 // and the starting address of those instructions in memory, 
@@ -44,7 +32,7 @@ impl Instruction {
     }
 
     // Create a new Instruction from a pattern scan
-    fn from_pattern(instruction_bytes: Bytes, module: &Module, mask: &str) -> Result<Self, Error> {
+    fn from_pattern(instruction_bytes: Bytes, module: &Module, mask: &str) -> Result<Self> {
         let address = module.find_pattern(mask).ok_or(Error::PatternScanError)?;
         Ok(Self {
             instruction_bytes,
@@ -59,7 +47,7 @@ impl Instruction {
     // which is a 1 byte instruction that does nothing. This is useful because
     // we can replace the original instruction with a nop, and then when we want
     // to toggle the instruction back on, we can replace the nop with the original
-    fn nop(&mut self, process: &Process) -> Result<(), Error> {
+    fn nop(&mut self, process: &Process) -> Result<()> {
         for i in 0..self.instruction_bytes.len() {
             write::<byte>(process.process_handle, self.address + i as usize, &mut 0x90)?;
         }
@@ -69,7 +57,7 @@ impl Instruction {
     }
 
     // Restore the orginal instruction
-    fn restore(&mut self, process: &Process) -> Result<(), Error> {
+    fn restore(&mut self, process: &Process) -> Result<()> {
         for (i, byte) in self.instruction_bytes.iter_mut().enumerate() {
             write::<byte>(process.process_handle, self.address + i, &mut *byte)?;
         }
@@ -79,7 +67,7 @@ impl Instruction {
     }
 
     // Toggle the instruction on or off depending on its current state
-    fn toggle(&mut self, process: &Process) -> Result<(), Error> {
+    fn toggle(&mut self, process: &Process) -> Result<()> {
         if self.disabled {
             self.restore(process)?;
         } else {
@@ -90,7 +78,7 @@ impl Instruction {
     }
 }
 
-pub fn run() -> Result<(), Error> {
+pub fn run() -> Result<()> {
     // Get the process handle for the game
     println!("Getting left4dead process handle...");
     let left_4_dead = Process::from_process_name("left4dead.exe")?;

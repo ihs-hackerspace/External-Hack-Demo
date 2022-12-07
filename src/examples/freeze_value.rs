@@ -1,8 +1,8 @@
 use toy_arms::external::Process;
-use toy_arms::external::error::TAExternalError;
 use toy_arms::external::{ read, write };
 use std::thread::sleep;
 use std::time::Duration;
+use crate::prelude::*;
 
 // Follows the chain of offsets by dereferencing the pointer at each address,
 // adding the next offset to the result, and repeating until the end of the chain
@@ -10,7 +10,7 @@ fn follow_offset_chain(
     process: &Process, 
     module_base: usize, 
     offsets: &Vec<usize>
-) -> Result<usize, TAExternalError> {
+) -> Result<usize> {
     // Create a mutable starting address
     let mut address = module_base;
 
@@ -25,7 +25,7 @@ fn follow_offset_chain(
     Ok(address + offsets[offsets.len() - 1])
 }
 
-pub fn run() -> Result<(), TAExternalError> {
+pub fn run() -> Result<()> {
     // Create offset chains based on the game's memory found with Cheat Engine
     let health_offset_chain: Vec<usize> = vec![0x5D5444, 0xD8];
     let pistol_ammo_offset_chain: Vec<usize> = vec![0x5D6104, 0x4A8];
